@@ -4,22 +4,16 @@ import java.util.List;
 
 public class MissingPlaceholderValueException extends RuntimeException {
 
-  private String message;
-
   public MissingPlaceholderValueException(List<String> placeholders){
-    generateMessage(placeholders);
+    super(generateMessage(placeholders));
   }
 
-  private void generateMessage(List<String> placeholders){
+  private static String generateMessage(List<String> placeholders){
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("{ ");
     placeholders.forEach(stringBuilder::append);
     stringBuilder.append(" }");
-    message = String.format("Value for placeholder(s) %s is missing!", stringBuilder);
+    return String.format("Value for placeholder(s) %s is missing!", stringBuilder);
   }
 
-  @Override
-  public String getMessage() {
-    return message;
-  }
 }

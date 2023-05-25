@@ -48,7 +48,7 @@ class TemplateGeneratorTest {
 
     Map<String, String> runtimeValues
         = createRuntimeValues(new String[] {"name", "text"}, new String[] {"ü", "ñ"});
-    String expectedOutput = "Template with Latin-1 characters: éàö, #{name}: #{text}";
+    String expectedOutput = "Template with Latin-1 characters: éàö, ü: ñ";
     when(templateGeneratorMock.generateTemplate(template, runtimeValues)).thenCallRealMethod();
 
     String generatedTemplate = templateGeneratorMock.generateTemplate(template, runtimeValues);
@@ -65,7 +65,7 @@ class TemplateGeneratorTest {
         new Object[] {"Hello, {name}!", runtimeValues, "Hello, {name}!"},
         new Object[] {"Hello, World!", runtimeValues, "Hello, World!"}, // Test Ignoring Unused Runtime Values
         new Object[] {"Some text: #{value}", createRuntimeValues(new String[] {"value"}, new String[] {"#{tag}"}),
-            "Some text: #{tag}"} // Test Runtime Value Format
+            "Some text: #{tag}"}
     );
   }
 
