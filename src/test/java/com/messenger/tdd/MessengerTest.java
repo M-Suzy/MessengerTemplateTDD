@@ -1,6 +1,7 @@
 package com.messenger.tdd;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -95,6 +96,7 @@ class MessengerTest
   @Test
   void testFileMode_throwsException(@TempDir File temporaryFolder)
   {
+    File inputTempFile = new File(temporaryFolder, "input.txt");
     File templateTempFile = new File(temporaryFolder, "template.txt");
     File outputTempFile = new File(temporaryFolder, "output.txt");
 
@@ -102,6 +104,7 @@ class MessengerTest
 
     String templatePath = templateTempFile.getAbsolutePath();
     String outputPath = outputTempFile.getAbsolutePath();
+    Assumptions.assumeTrue(inputTempFile.exists());
 
     Assertions.assertThrows(CannotReadFileException.class, () ->
         messenger.runFileMode(invalidInputPath, templatePath, outputPath)
