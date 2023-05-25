@@ -2,13 +2,16 @@ package com.messenger.tdd;
 
 import java.util.List;
 
-public class MissingPlaceholderValueException extends RuntimeException {
+public class MissingPlaceholderValueException extends RuntimeException
+{
 
-  public MissingPlaceholderValueException(List<String> placeholders){
+  public MissingPlaceholderValueException(List<String> placeholders)
+  {
     super(generateMessage(placeholders));
   }
 
-  private static String generateMessage(List<String> placeholders){
+  private static String generateMessage(List<String> placeholders)
+  {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("{ ");
     placeholders.forEach(stringBuilder::append);

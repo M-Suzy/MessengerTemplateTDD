@@ -19,20 +19,22 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 @ExtendWith(MockitoExtension.class)
-class MessengerTest {
-
+class MessengerTest
+{
   @Spy
   private Messenger messenger;
   private ByteArrayOutputStream consoleOutput;
 
   @BeforeEach
-  public void setup() {
+  public void setup()
+  {
     consoleOutput = new ByteArrayOutputStream();
     System.setOut(new PrintStream(consoleOutput));
   }
 
   @Test
-  void testRunConsoleMode() {
+  void testRunConsoleMode()
+  {
     String template = "Hello, #{name}!";
     String runtimeValuesInput = "name=John";
     String input = template + System.lineSeparator() + runtimeValuesInput;
@@ -48,7 +50,8 @@ class MessengerTest {
     Assertions.assertEquals(expectedOutput.trim(), outputWithoutLogs);
   }
 
-  private String removeLogMessage(String consoleOutput) {
+  private String removeLogMessage(String consoleOutput)
+  {
     String[] lines = consoleOutput.split(System.lineSeparator());
     StringBuilder outputWithoutLogs = new StringBuilder();
     for (String line : lines) {
@@ -61,7 +64,8 @@ class MessengerTest {
   }
 
   @Test
-  void testFileMode(@TempDir File temporaryFolder) throws IOException {
+  void testFileMode(@TempDir File temporaryFolder) throws IOException
+  {
     String inputFileName = "input.txt";
     String templateFileName = "template.txt";
     String outputFileName = "output.txt";
@@ -87,5 +91,22 @@ class MessengerTest {
     String expectedOutput = "Hello, John!";
     Assertions.assertEquals(expectedOutput, output);
   }
+
+  @Test
+  void testFileMode_throwsException(@TempDir File temporaryFolder)
+  {
+    File templateTempFile = new File(temporaryFolder, "template.txt");
+    File outputTempFile = new File(temporaryFolder, "output.txt");
+
+    String invalidInputPath = "nonexistentfile.txt";
+
+    String templatePath = templateTempFile.getAbsolutePath();
+    String outputPath = outputTempFile.getAbsolutePath();
+
+    Assertions.assertThrows(CannotReadFileException.class, () ->
+        messenger.runFileMode(invalidInputPath, templatePath, outputPath)
+    );
+  }
+
 }
 

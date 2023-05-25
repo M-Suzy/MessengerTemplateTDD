@@ -13,24 +13,29 @@ import java.util.Scanner;
 
 @Slf4j
 @Component
-public class Messenger {
-
+public class Messenger
+{
+  private static final int KEY_VALUE_LENGTH = 2;
   private final TemplateGenerator templateGenerator;
 
-  public Messenger() {
+  public Messenger()
+  {
     this.templateGenerator = new TemplateGenerator();
   }
 
-  public void runConsoleMode() {
+  public void runConsoleMode()
+  {
     Scanner scanner = new Scanner(System.in);
     log.info("Enter the template:");
     String template = scanner.nextLine();
     log.info("Enter the runtime values (key=value pairs separated by commas):");
     String runtimeValuesInput = scanner.nextLine();
     String[] runtimeValuesArray = runtimeValuesInput.split(",");
-    for (String runtimeValue : runtimeValuesArray) {
+    for (String runtimeValue : runtimeValuesArray)
+    {
       String[] keyValue = runtimeValue.split("=");
-      if (keyValue.length == 2) {
+      if (keyValue.length == KEY_VALUE_LENGTH)
+      {
         String key = keyValue[0].trim();
         String value = keyValue[1].trim();
         template = templateGenerator.generateTemplate(template, Map.of(key, value));
@@ -39,23 +44,29 @@ public class Messenger {
     log.info(template);
   }
 
-  public void runFileMode(String inputPath, String templatePath, String outputPath) {
-    try {
+  public void runFileMode(String inputPath, String templatePath, String outputPath)
+  {
+    try
+    {
       String template = Files.readString(Path.of(templatePath));
       String generatedTemplate = templateGenerator.generateTemplate(template, readRuntimeValuesFromFile(inputPath));
       Files.writeString(Path.of(outputPath), generatedTemplate);
       log.info("Generated Template saved to file: " + outputPath);
-    } catch (IOException e) {
+    } catch (IOException e)
+    {
       throw new CannotReadFileException("IOException: Unable to process file!", e);
     }
   }
 
-  private Map<String, String> readRuntimeValuesFromFile(String inputPath) throws IOException {
+  private static Map<String, String> readRuntimeValuesFromFile(String inputPath) throws IOException
+  {
     Map<String, String> runtimeValues = new HashMap<>();
     List<String> lines = Files.readAllLines(Path.of(inputPath));
-    for (String line : lines) {
-      String[] keyValue = line.split("=", 2);
-      if (keyValue.length == 2) {
+    for (String line : lines)
+    {
+      String[] keyValue = line.split("=", KEY_VALUE_LENGTH);
+      if (keyValue.length == KEY_VALUE_LENGTH)
+      {
         String key = keyValue[0].trim();
         String value = keyValue[1].trim();
         runtimeValues.put(key, value);

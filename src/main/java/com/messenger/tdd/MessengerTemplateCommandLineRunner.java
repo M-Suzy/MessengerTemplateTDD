@@ -3,9 +3,8 @@ package com.messenger.tdd;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 
-public class MessengerTemplateCommandLineRunner implements CommandLineRunner {
-
-  private final Messenger messenger;
+public class MessengerTemplateCommandLineRunner implements CommandLineRunner
+{
   private static final int MIN_ARG_NUMBER = 1;
 
   private final String mode;
@@ -15,6 +14,7 @@ public class MessengerTemplateCommandLineRunner implements CommandLineRunner {
   private final String templatePath;
 
   private final String outputPath;
+  private final Messenger messenger;
 
   private static final String USAGE_INFO = """
       App should take the following arguments:
@@ -25,7 +25,8 @@ public class MessengerTemplateCommandLineRunner implements CommandLineRunner {
 
   public MessengerTemplateCommandLineRunner(Messenger messenger, @Value("${--mode}") String mode,
       @Value("${file.inputPath}") String inputPath, @Value("${file.templatePath}")String templatePath,
-      @Value("${file.outputPath}") String outputPath) {
+      @Value("${file.outputPath}") String outputPath)
+  {
     this.messenger = messenger;
     this.mode = mode;
     this.inputPath = inputPath;
@@ -34,22 +35,28 @@ public class MessengerTemplateCommandLineRunner implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) {
-    if (args.length < MIN_ARG_NUMBER) {
+  public void run(String... args)
+  {
+    if (args.length < MIN_ARG_NUMBER)
+    {
       throw new IllegalArgumentException(String.format("Invalid arguments: %s", USAGE_INFO));
     }
-    if(mode.equalsIgnoreCase("file")){
-      if(inputPath.isBlank() || outputPath.isBlank() || templatePath.isBlank()){
+    if(mode.equalsIgnoreCase("file"))
+    {
+      if(inputPath.isBlank() || outputPath.isBlank() || templatePath.isBlank())
+      {
         throw new IllegalArgumentException(
             String.format("Providing file paths is required for this mode: %s", USAGE_INFO));
       }
       messenger.runFileMode(inputPath, templatePath, outputPath);
-    } else {
+    } else
+    {
       messenger.runConsoleMode();
     }
   }
 
-  public static String getUsageInfo() {
+  public static String getUsageInfo()
+  {
     return USAGE_INFO;
   }
 }

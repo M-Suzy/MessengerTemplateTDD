@@ -25,7 +25,8 @@ class TemplateGeneratorTest {
   @ParameterizedTest
   @MethodSource("templateTestCases")
   void testTemplateGeneration_placeholderValueProvided(String template, Map<String, String> runtimeValues,
-      String expectedOutput) {
+      String expectedOutput)
+  {
     when(templateGeneratorMock.generateTemplate(template, runtimeValues)).thenCallRealMethod();
     String generatedTemplate = templateGeneratorMock.generateTemplate(template, runtimeValues);
     assertEquals(expectedOutput, generatedTemplate);
@@ -33,7 +34,8 @@ class TemplateGeneratorTest {
   }
 
   @Test
-  void testTemplateGeneration_placeholderValueNotProvided() {
+  void testTemplateGeneration_placeholderValueNotProvided()
+  {
     String template = "I live in #{city}, #{country}.";
     Map<String, String> runtimeValues = createRuntimeValues(new String[] {"city"}, new String[] {"Yerevan"});
     when(templateGeneratorMock.generateTemplate(template, runtimeValues)).thenCallRealMethod();
@@ -43,7 +45,8 @@ class TemplateGeneratorTest {
   }
 
   @Test
-  void testLatin1CharacterSupport() {
+  void testLatin1CharacterSupport()
+  {
     String template = "Template with Latin-1 characters: éàö, #{name}: #{text}";
 
     Map<String, String> runtimeValues
@@ -56,7 +59,8 @@ class TemplateGeneratorTest {
     assertEquals(expectedOutput, generatedTemplate);
   }
 
-  private static Stream<Object[]> templateTestCases() {
+  private static Stream<Object[]> templateTestCases()
+  {
     String[] keys = new String[] {"name"};
     String[] values = new String[] {"John"};
     Map<String, String> runtimeValues = createRuntimeValues(keys, values);
@@ -69,9 +73,11 @@ class TemplateGeneratorTest {
     );
   }
 
-  private static Map<String, String> createRuntimeValues(String[] keys, String[] values) {
+  private static Map<String, String> createRuntimeValues(String[] keys, String[] values)
+  {
     Map<String, String> runtimeValues = new HashMap<>();
-    for (int i = 0; i < keys.length; i++) {
+    for (int i = 0; i < keys.length; i++)
+    {
       runtimeValues.put(keys[i], values[i]);
     }
     return runtimeValues;
